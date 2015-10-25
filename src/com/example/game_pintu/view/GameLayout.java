@@ -90,6 +90,10 @@ public class GameLayout extends RelativeLayout implements OnClickListener {
 	 * 是否游戏处于结束状态：用于回调后计时
 	 */
 	private boolean isGameOver = false;
+	/**
+	 * 是否计时
+	 */
+	private boolean isTimeEnable = false;
 	
 	/**
 	 * 游戏计时
@@ -126,7 +130,6 @@ public class GameLayout extends RelativeLayout implements OnClickListener {
 	private void init() {
 		mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, INIT_MARGIN, getResources().getDisplayMetrics());
 		mPadding = min(getPaddingLeft(), getPaddingTop(), getPaddingBottom(), getPaddingRight());
-		mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
 	}
 
 	private int min(int ... params) {
@@ -148,13 +151,15 @@ public class GameLayout extends RelativeLayout implements OnClickListener {
 			initBitmap();
 			//设置ImageView的宽高
 			initItems();
+//			mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
+			checkTimeEnable();
 			once = false;
 		}
 		setMeasuredDimension(mWidth, mHeight);
 	}
 
 	private void initBitmap() {
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl2);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.girl1);
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		if (width < height) {
@@ -340,7 +345,8 @@ public class GameLayout extends RelativeLayout implements OnClickListener {
 		initBitmap();
 		initItems();
 		if (isGameOver || isSuccess) {
-			mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
+//			mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
+			checkTimeEnable();
 			isGameOver = false;
 			isSuccess = false;
 		}
@@ -386,7 +392,23 @@ public class GameLayout extends RelativeLayout implements OnClickListener {
 	public void resume() {
 		if (isPause) {
 			isPause = false;
+//			mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
+			checkTimeEnable();
+		}
+	}
+	
+	public void checkTimeEnable() {
+		if (isTimeEnable) {
+			countTimeLevel();
 			mHandler.sendEmptyMessageDelayed(TIME_CHANGE, 1000);
 		}
+	}
+	
+	private void countTimeLevel() {
+		mTime = (int) (Math.pow(2, mLevel) * 30);
+	}
+
+	public void setTimeEnable (boolean isTimeEnable) {
+		this.isTimeEnable = isTimeEnable;
 	}
 }

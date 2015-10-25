@@ -25,6 +25,7 @@ public class MainActivity extends Activity implements GameListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		myGameLayout = (GameLayout) this.findViewById(R.id.myGameLayout);
+		myGameLayout.setTimeEnable(true);
 		id_time = (TextView) this.findViewById(R.id.id_time);
 		id_level = (TextView) this.findViewById(R.id.id_level);
 		myGameLayout.setGameListener(this);
